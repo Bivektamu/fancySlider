@@ -1,0 +1,147 @@
+@import './mixin.scss';
+
+
+* {
+  box-sizing: border-box;
+}
+#fancySlider {
+  @include flex(center, space-between);
+  padding-left: 12%;
+  padding-right: 12%;
+  position: relative;
+
+  .click_me {
+    width: 66px;
+    height: 14px;
+    border: none;
+    position: absolute;
+    top: calc(50% - 1px);
+    overflow: hidden;
+    box-shadow: none;
+    background: none;
+    z-index: 3;
+    cursor: pointer;
+    svg {
+      width: 100%;
+      height: auto;
+    }
+    &.left {
+      left: calc(6% - 33px);
+    }
+    &.right {
+      right: calc(6% - 33px);
+      transform: rotate(180deg);
+    }
+  }
+  //
+  .wrapper {
+    position: absolute;
+    display: none;
+  }
+  & > div {
+    width: calc(33.333%);
+    position: relative;
+    overflow: hidden;
+    
+    &#left,
+    &#right {
+      &:before {
+        transition-delay: 0.5s;
+      }
+    }
+
+    &#left {
+      padding-right: 100px;
+      &:after {
+        width: 100px;
+        height: 100%;
+        content: "";
+        position: absolute;
+        right: 0;
+        background: #fff;
+        z-index: 2;
+        top: 0;
+      }
+      .next {
+        left: 0;
+      }
+
+      img {
+        filter: blur(3px);
+      }
+    }
+    &#right {
+      padding-left: 100px;
+      img {
+        filter: blur(3px);
+      }
+      &:after {
+        width: 100px;
+        height: 100%;
+        content: "";
+        position: absolute;
+        left: 0;
+        background: #fff;
+        z-index: 2;
+        top: 0;
+      }
+
+      .next {
+        right: 0;
+      }
+    }
+
+    &#center {
+      padding: 0;
+      .next {
+        width: 100%;
+      }
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      object-fit: cover;
+      // height: auto;
+    }
+
+    .next {
+      position: absolute;
+      // right: 100px;
+      top: 0;
+      bottom: 0;
+      z-index: 2;
+      width: calc(100% - 100px);
+      height: 100%;
+      // transform: translateX(100%) scaleY(1.2);
+      opacity: 0;
+      transform-origin: right;
+      transition: all 1s cubic-bezier(0.45, 0, 0.55, 1);
+      transition-duration: 0s;
+      object-fit: cover;
+      &.show {
+        transition-duration: 1s;
+        opacity: 1;
+        // transform: translateX(0) scaleY(1);
+      }
+    }
+
+    .current {
+      // position: relative;
+      // z-index: 2;
+      &.hide {
+        // transform: translateX(-20%) scaleY(1.1);
+        transition: all 1s cubic-bezier(0.45, 0, 0.55, 1);
+        transition-delay: 0.2s;
+        opacity: 0;
+      }
+    }
+  }
+  &.show {
+    & > div {
+      &:before {
+        top: 100%;
+      }
+    }
+  }
+}

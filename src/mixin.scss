@@ -1,0 +1,51 @@
+
+@mixin flex($align, $justify) {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-align: $align;
+  align-items: $align;
+  -webkit-box-pack: $justify;
+  justify-content: $justify;
+}
+
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+@mixin bgImg($img, $position) {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: $position;
+  background-image: url($img);
+}
+
+@mixin width($width) {
+  width: $width;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin transition($time) {
+  -webkit-transition: all $time ease;
+  transition: all $time ease;
+}
+
+@mixin transitionDelay($delay) {
+  -webkit-transition-delay: $delay;
+  transition-delay: $delay;
+}
+
+@mixin transform($style) {
+  -webkit-transform: $style;
+  transform: $style;
+}
+
+@mixin boxShadow($params) {
+  box-shadow: $params;
+}
