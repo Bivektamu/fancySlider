@@ -13,7 +13,6 @@ function App() {
 
   const [slider, setSlider] = useState(null);
   const [timer, setTimer] = useState(1000);
-  const [stop, setStop] = useState(false);
   const [images, setImages] = useState(null);
   const [leftSide, setLeftSide] = useState(null);
   const [counter, setCounter] = useState(0);
@@ -27,16 +26,13 @@ function App() {
         declareSlider();
       } else {
         let nextSlide = slider.querySelector(".click_me.right");
-         const sliderInterval = setInterval(() => {
+        const sliderInterval = setInterval(() => {
           startSlider(nextSlide);
-        }, timer * 3);
-
-        if(stop) {clearInterval(sliderInterval)}
-
+        }, timer);
         return () => clearInterval(sliderInterval);
       }
     }
-  }, [slider, images, stop]);
+  }, [slider, images]);
 
   function declareSlider() {
     let leftSide = document.createElement("div"),
@@ -181,6 +177,7 @@ function App() {
           item.classList.remove("show");
           item.classList.remove("next");
         });
+        setCounter(c);
       }, timer);
       return c;
     });
@@ -188,16 +185,17 @@ function App() {
 
   ////////////////////////////////////////////////
   const onBtnClick = (e) => {
-    
-    setStop(true)
-
+    // clearInterval(sliderInterval);
 
     let nextSlide = e.target;
     startSlider(nextSlide);
 
     setTimeout(() => {
-      setStop(false)
-    }, timer * 1);
+      nextSlide = slider.querySelector(".click_me.right");
+      const sliderInterval = setInterval(() => {
+        startSlider(nextSlide);
+      }, timer);
+    }, timer);
   };
 
   return (
