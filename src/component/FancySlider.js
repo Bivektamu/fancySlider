@@ -1,4 +1,4 @@
-import React,  { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 
 import imgO from "../images/2a.jpg";
 import imgT from "../images/2b.jpg";
@@ -7,51 +7,49 @@ import imgF from "../images/2d.jpg";
 import imgFi from "../images/2e.jpg";
 import imgS from "../images/2f.jpg";
 
-
 const FancySlider = (props) => {
-
-
-
-    
-
-    const wrapper = useRef(null);
+  const wrapper = useRef(null);
   const sliderRef = useRef(null);
 
   const [slider, setSlider] = useState(null);
-  const [timer, setTimer] = useState(1000);
+  const [timer, setTimer] = useState(props.timer?props.timer : 1000);
   const [stop, setStop] = useState(false);
-  const [images, setImages] = useState(props.images);
+  const [images, setImages] = useState(props.images?props.images : []);
   const [leftSide, setLeftSide] = useState(null);
   const [counter, setCounter] = useState(0);
+  const [auto, setAuto] = useState(true || props.auto);
 
   useEffect(() => {
+    console.log(props.timer)
     if (!slider) {
       setSlider(sliderRef.current);
-      setImages(sliderRef.current.querySelectorAll(".wrapper > img"));
+      // setImages(sliderRef.current.querySelectorAll(".wrapper > img"));
     } else {
-      if (!leftSide) {
+      if (images) {
+        console.log(images)
         declareSlider();
       } else {
-        let nextSlide = slider.querySelector(".click_me.right");
-        const sliderInterval = setInterval(() => {
-          startSlider(nextSlide);
-        }, timer*4);
+        if (auto) {
+          let nextSlide = slider.querySelector(".click_me.right");
+          const sliderInterval = setInterval(() => {
+            startSlider(nextSlide);
+          }, timer * 4);
 
-        if (stop) {
-          clearInterval(sliderInterval);
+          if (stop) {
+            clearInterval(sliderInterval);
+          }
+
+          return () => clearInterval(sliderInterval);
         }
-
-        return () => clearInterval(sliderInterval);
       }
     }
   }, [slider, images, stop]);
+
 
   function declareSlider() {
     let leftSide = document.createElement("div"),
       rightSide = document.createElement("div"),
       center = document.createElement("div");
-
-
 
     let f1 = images[0],
       f2 = images[1],
@@ -59,31 +57,16 @@ const FancySlider = (props) => {
       l2 = images[images.length - 2],
       wrapper = slider.querySelector(".wrapper");
 
-      const newImgs = [l2, l1, ...images, f1, f2]
+    const newImgs = [l2, l1, ...images, f1, f2];
 
-      console.log(newImgs)
-
-    let clone = f1.cloneNode(true);
-    wrapper.append(clone);
-    clone = f2.cloneNode(true);
-    wrapper.append(clone);
-
-    clone = l1.cloneNode(true);
-    wrapper.prepend(clone);
-    clone = l2.cloneNode(true);
-    wrapper.prepend(clone);
 
     leftSide.setAttribute("id", "left");
     center.setAttribute("id", "center");
     rightSide.setAttribute("id", "right");
 
+    console.log(newImgs[counter])
 
-
-    let html = `<img src="${newImgs[counter].getAttribute(
-      "src"
-    )}" class="current" /><img src="${newImgs[counter + 1].getAttribute(
-      "src"
-    )}" class="next" />`;
+    let html = `<img src="${newImgs[counter]}" class="current" /><img src="${newImgs[counter + 1]}" class="next" />`;
     leftSide.innerHTML = html;
 
     html = `<img src="${newImgs[counter + 1].getAttribute(
@@ -100,10 +83,8 @@ const FancySlider = (props) => {
     )}" class="next" />`;
     rightSide.innerHTML = html;
 
-
     setImages(newImgs);
 
-    
     slider.appendChild(leftSide);
     slider.appendChild(center);
     slider.appendChild(rightSide);
@@ -139,14 +120,14 @@ const FancySlider = (props) => {
 
       a.forEach((element) => {
         if (element === "right") {
-          slider.classList.remove('reverse')
+          slider.classList.remove("reverse");
           if (c >= images.length - 3) {
             c = 2;
           } else {
             c = c + 1;
           }
         } else if (element === "left") {
-          slider.classList.add('reverse')
+          slider.classList.add("reverse");
 
           if (c < 2) {
             c = images.length - 3;
@@ -186,9 +167,7 @@ const FancySlider = (props) => {
       let next = slider.querySelectorAll(".next"),
         current = slider.querySelectorAll(".current");
 
-      
-        setTimeout(() => {
-          
+      setTimeout(() => {
         next.forEach((item) => {
           item.classList.add("show");
         });
@@ -196,22 +175,20 @@ const FancySlider = (props) => {
         current.forEach((item) => {
           item.classList.add("hide");
         });
-        let imgs = slider.querySelectorAll('img')
-        imgs.forEach(ele => {
-          ele.style.transitionDuration = '0s'
+        let imgs = slider.querySelectorAll("img");
+        imgs.forEach((ele) => {
+          ele.style.transitionDuration = "0s";
         });
 
-        let show = slider.querySelectorAll('img.show')
-        show.forEach(ele => {
-          ele.style.transitionDuration = `${timer/1000}s`
+        let show = slider.querySelectorAll("img.show");
+        show.forEach((ele) => {
+          ele.style.transitionDuration = `${timer / 1000}s`;
         });
 
-        
-        let hide = slider.querySelectorAll('img.hide')
-        hide.forEach(ele => {
-          ele.style.transitionDuration = `${timer/1000}s`
+        let hide = slider.querySelectorAll("img.hide");
+        hide.forEach((ele) => {
+          ele.style.transitionDuration = `${timer / 1000}s`;
         });
-
       }, 10);
 
       setTimeout(() => {
@@ -232,23 +209,20 @@ const FancySlider = (props) => {
           item.classList.remove("next");
         });
 
-        
-        let imgs = slider.querySelectorAll('img')
-        imgs.forEach(ele => {
-          ele.style.transitionDuration = '0s'
+        let imgs = slider.querySelectorAll("img");
+        imgs.forEach((ele) => {
+          ele.style.transitionDuration = "0s";
         });
 
-        let show = slider.querySelectorAll('img.show')
-        show.forEach(ele => {
-          ele.style.transitionDuration = `${timer/1000}s`
+        let show = slider.querySelectorAll("img.show");
+        show.forEach((ele) => {
+          ele.style.transitionDuration = `${timer / 1000}s`;
         });
 
-        
-        let hide = slider.querySelectorAll('img.hide')
-        hide.forEach(ele => {
-          ele.style.transitionDuration = `${timer/1000}s`
+        let hide = slider.querySelectorAll("img.hide");
+        hide.forEach((ele) => {
+          ele.style.transitionDuration = `${timer / 1000}s`;
         });
-
       }, timer * 1.2);
       return c;
     });
@@ -263,34 +237,28 @@ const FancySlider = (props) => {
     startSlider(nextSlide);
 
     setTimeout(() => {
-      setStop(false)
+      setStop(false);
     }, timer * 1);
   };
 
-
-
-
   return (
     <div id="fancySlider" className="pb200 desk plr100" ref={sliderRef}>
-    <div className="wrapper" ref={wrapper}>
-      <img src={imgO} alt="" />
-      <img src={imgT} alt="" />
-      <img src={imgTh} alt="" />
-      <img src={imgF} alt="" />
-      <img src={imgFi} alt="" />
-      <img src={imgS} alt="" />
+      <div className="wrapper" ref={wrapper}>
+        <img src={imgO} alt="" />
+        <img src={imgT} alt="" />
+        <img src={imgTh} alt="" />
+        <img src={imgF} alt="" />
+        <img src={imgFi} alt="" />
+        <img src={imgS} alt="" />
+      </div>
+
+      <button className="click_me left" onClick={(e) => onBtnClick(e)}></button>
+      <button
+        className="click_me right"
+        onClick={(e) => onBtnClick(e)}
+      ></button>
     </div>
+  );
+};
 
-    <button
-      className="click_me left"
-      onClick={(e) => onBtnClick(e)}
-    ></button>
-    <button
-      className="click_me right"
-      onClick={(e) => onBtnClick(e)}
-    ></button>
-  </div>
-  )
-}
-
-export default FancySlider
+export default FancySlider;
