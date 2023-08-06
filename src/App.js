@@ -22,9 +22,7 @@ function App() {
       </header>
 
       <main>
-
-        <FancySlider images = {images} auto={true} />
-       
+        <FancySlider images = {images} auto={true} timer={1000} directionNav = {true} contronNav={false} />
       </main>
     </div>
   );

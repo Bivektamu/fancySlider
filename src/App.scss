@@ -24,6 +24,12 @@
     background: none;
     z-index: 3;
     cursor: pointer;
+    &.hide {
+      width: 0;
+      height: 0;
+      opacity: 0;
+      visibility: hidden;
+    }
     &:before {
       content: '';
       position: absolute;

@@ -12,31 +12,30 @@ const FancySlider = (props) => {
   const sliderRef = useRef(null);
 
   const [slider, setSlider] = useState(null);
-  const [timer, setTimer] = useState(props.timer?props.timer : 1000);
+  const [timer, setTimer] = useState(props.timer ? props.timer : 1000);
   const [stop, setStop] = useState(false);
-  const [images, setImages] = useState(props.images?props.images : []);
+  const [images, setImages] = useState(props.images ? props.images : []);
   const [leftSide, setLeftSide] = useState(null);
   const [counter, setCounter] = useState(0);
   const auto = props?.auto;
+  const directionNav = props?.directionNav
+  const controlNav = props?.controlNav
 
   useEffect(() => {
-
     if (!slider) {
       setSlider(sliderRef.current);
 
       // setImages(sliderRef.current.querySelectorAll(".wrapper > img"));
     } else {
-      
       if (images && !leftSide) {
         declareSlider();
-    console.log(auto)
-
+        console.log(auto);
       } else {
         if (auto) {
           let nextSlide = slider.querySelector(".click_me.right");
           const sliderInterval = setInterval(() => {
             startSlider(nextSlide);
-          }, timer * 4);
+          }, timer);
 
           if (stop) {
             clearInterval(sliderInterval);
@@ -47,8 +46,6 @@ const FancySlider = (props) => {
       }
     }
   }, [slider, stop, timer, leftSide]);
-
-
 
   function declareSlider() {
     let lS = document.createElement("div"),
@@ -63,18 +60,23 @@ const FancySlider = (props) => {
 
     const newImgs = [l2, l1, ...images, f1, f2];
 
-
     lS.setAttribute("id", "left");
     center.setAttribute("id", "center");
     rightSide.setAttribute("id", "right");
 
-    let html = `<img src="${newImgs[counter]}" class="current" /><img src="${newImgs[counter + 1]}" class="next" />`;
+    let html = `<img src="${newImgs[counter]}" class="current" /><img src="${
+      newImgs[counter + 1]
+    }" class="next" />`;
     lS.innerHTML = html;
 
-    html = `<img src="${newImgs[counter + 1]}" class="current" /><img src="${newImgs[counter + 2]}" class="next" />`;
+    html = `<img src="${newImgs[counter + 1]}" class="current" /><img src="${
+      newImgs[counter + 2]
+    }" class="next" />`;
     center.innerHTML = html;
 
-    html = `<img src="${newImgs[counter + 2]}" class="current" /><img src="${newImgs[counter + 3]}" class="next" />`;
+    html = `<img src="${newImgs[counter + 2]}" class="current" /><img src="${
+      newImgs[counter + 3]
+    }" class="next" />`;
     rightSide.innerHTML = html;
 
     // setImages(newImgs);
@@ -235,6 +237,13 @@ const FancySlider = (props) => {
     }, timer * 1);
   };
 
+  
+  const controlNavWrapper = (
+    <div id="controlWrapper">
+
+    </div>
+  )
+
   return (
     <div id="fancySlider" className="pb200 desk plr100" ref={sliderRef}>
       <div className="wrapper" ref={wrapper}>
@@ -246,9 +255,14 @@ const FancySlider = (props) => {
         <img src={imgS} alt="" />
       </div>
 
-      <button className="click_me left" onClick={(e) => onBtnClick(e)}></button>
+      {controlNav && controlNavWrapper}
+
       <button
-        className="click_me right"
+        className={directionNav==false? "click_me left hide" : "click_me left"}
+        onClick={(e) => onBtnClick(e)}
+      ></button>
+      <button
+        className={directionNav==false? "click_me right hide" : "click_me right"}
         onClick={(e) => onBtnClick(e)}
       ></button>
     </div>
