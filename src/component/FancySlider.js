@@ -17,17 +17,20 @@ const FancySlider = (props) => {
   const [images, setImages] = useState(props.images?props.images : []);
   const [leftSide, setLeftSide] = useState(null);
   const [counter, setCounter] = useState(0);
-  const [auto, setAuto] = useState(true || props.auto);
+  const auto = props?.auto;
 
   useEffect(() => {
-    console.log(props.timer)
+
     if (!slider) {
       setSlider(sliderRef.current);
+
       // setImages(sliderRef.current.querySelectorAll(".wrapper > img"));
     } else {
-      if (images) {
-        console.log(images)
+      
+      if (images && !leftSide) {
         declareSlider();
+    console.log(auto)
+
       } else {
         if (auto) {
           let nextSlide = slider.querySelector(".click_me.right");
@@ -43,11 +46,12 @@ const FancySlider = (props) => {
         }
       }
     }
-  }, [slider, images, stop]);
+  }, [slider, stop, timer, leftSide]);
+
 
 
   function declareSlider() {
-    let leftSide = document.createElement("div"),
+    let lS = document.createElement("div"),
       rightSide = document.createElement("div"),
       center = document.createElement("div");
 
@@ -60,38 +64,28 @@ const FancySlider = (props) => {
     const newImgs = [l2, l1, ...images, f1, f2];
 
 
-    leftSide.setAttribute("id", "left");
+    lS.setAttribute("id", "left");
     center.setAttribute("id", "center");
     rightSide.setAttribute("id", "right");
 
-    console.log(newImgs[counter])
-
     let html = `<img src="${newImgs[counter]}" class="current" /><img src="${newImgs[counter + 1]}" class="next" />`;
-    leftSide.innerHTML = html;
+    lS.innerHTML = html;
 
-    html = `<img src="${newImgs[counter + 1].getAttribute(
-      "src"
-    )}" class="current" /><img src="${newImgs[counter + 2].getAttribute(
-      "src"
-    )}" class="next" />`;
+    html = `<img src="${newImgs[counter + 1]}" class="current" /><img src="${newImgs[counter + 2]}" class="next" />`;
     center.innerHTML = html;
 
-    html = `<img src="${newImgs[counter + 2].getAttribute(
-      "src"
-    )}" class="current" /><img src="${newImgs[counter + 3].getAttribute(
-      "src"
-    )}" class="next" />`;
+    html = `<img src="${newImgs[counter + 2]}" class="current" /><img src="${newImgs[counter + 3]}" class="next" />`;
     rightSide.innerHTML = html;
 
-    setImages(newImgs);
+    // setImages(newImgs);
 
-    slider.appendChild(leftSide);
+    slider.appendChild(lS);
     slider.appendChild(center);
     slider.appendChild(rightSide);
 
-    setLeftSide(leftSide);
+    setLeftSide(lS);
 
-    wrapper.remove();
+    // wrapper.remove();
 
     const nextSlide = slider.querySelectorAll("img.show");
 
@@ -146,7 +140,7 @@ const FancySlider = (props) => {
           nextSlide = element;
         }
       });
-      nextSlide.setAttribute("src", images[c].getAttribute("src"));
+      nextSlide.setAttribute("src", images[c]);
 
       center.childNodes.forEach((element) => {
         if (element.className === "next") {
@@ -154,7 +148,7 @@ const FancySlider = (props) => {
         }
       });
 
-      nextSlide.setAttribute("src", images[c + 1].getAttribute("src"));
+      nextSlide.setAttribute("src", images[c + 1]);
 
       rightSide.childNodes.forEach((element) => {
         if (element.className === "next") {
@@ -162,7 +156,7 @@ const FancySlider = (props) => {
         }
       });
 
-      nextSlide.setAttribute("src", images[c + 2].getAttribute("src"));
+      nextSlide.setAttribute("src", images[c + 2]);
 
       let next = slider.querySelectorAll(".next"),
         current = slider.querySelectorAll(".current");

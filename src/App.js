@@ -23,8 +23,7 @@ function App() {
 
       <main>
 
-        <FancySlider images = {images} auto = {false} timer = {100} />
-
+        <FancySlider images = {images} auto={true} />
        
       </main>
     </div>
