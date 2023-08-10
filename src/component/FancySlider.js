@@ -1,18 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import imgO from "../images/2a.jpg";
-import imgT from "../images/2b.jpg";
-import imgTh from "../images/2c.jpg";
-import imgF from "../images/2d.jpg";
-import imgFi from "../images/2e.jpg";
-import imgS from "../images/2f.jpg";
-
 const FancySlider = (props) => {
-  const wrapper = useRef(null);
   const sliderRef = useRef(null);
 
   const [slider, setSlider] = useState(null);
-  const [timer, setTimer] = useState(props.timer ? props.timer : 1000);
+  const [timer, setTimer] = useState(props.timer ? props.timer : 4000);
   const [stop, setStop] = useState(false);
   const [images, setImages] = useState(props.images ? props.images : []);
   const [leftSide, setLeftSide] = useState(null);
@@ -20,16 +12,14 @@ const FancySlider = (props) => {
   const auto = props?.auto;
   const directionNav = props?.directionNav
   const controlNav = props?.controlNav
+  const transitionTime = props.transitionTime? props.transitionTime : 500
 
   useEffect(() => {
     if (!slider) {
       setSlider(sliderRef.current);
-
-      // setImages(sliderRef.current.querySelectorAll(".wrapper > img"));
     } else {
       if (images && !leftSide) {
         declareSlider();
-        console.log(auto);
       } else {
         if (auto) {
           let nextSlide = slider.querySelector(".click_me.right");
@@ -45,21 +35,24 @@ const FancySlider = (props) => {
         }
       }
     }
-  }, [slider, stop, timer, leftSide]);
+  }, [slider, stop, timer, leftSide, counter]);
 
   function declareSlider() {
     let lS = document.createElement("div"),
       rightSide = document.createElement("div"),
-      center = document.createElement("div");
+      center = document.createElement("div"),
+      wrapper = document.createElement('div');
 
     let f1 = images[0],
       f2 = images[1],
       l1 = images[images.length - 1],
-      l2 = images[images.length - 2],
-      wrapper = slider.querySelector(".wrapper");
+      l2 = images[images.length - 2];
+
+      console.log(timer)
 
     const newImgs = [l2, l1, ...images, f1, f2];
 
+    wrapper.setAttribute('id', 'wrapper')
     lS.setAttribute("id", "left");
     center.setAttribute("id", "center");
     rightSide.setAttribute("id", "right");
@@ -79,15 +72,14 @@ const FancySlider = (props) => {
     }" class="next" />`;
     rightSide.innerHTML = html;
 
-    // setImages(newImgs);
+    setImages(newImgs);
+    wrapper.appendChild(lS)
+    wrapper.appendChild(center)
+    wrapper.appendChild(rightSide)
 
-    slider.appendChild(lS);
-    slider.appendChild(center);
-    slider.appendChild(rightSide);
+    slider.prepend(wrapper)
 
     setLeftSide(lS);
-
-    // wrapper.remove();
 
     const nextSlide = slider.querySelectorAll("img.show");
 
@@ -109,8 +101,8 @@ const FancySlider = (props) => {
       return;
     }
 
+
     setCounter((prevState) => {
-      console.log(prevState);
       let c = prevState;
       const a = e.classList;
 
@@ -178,12 +170,12 @@ const FancySlider = (props) => {
 
         let show = slider.querySelectorAll("img.show");
         show.forEach((ele) => {
-          ele.style.transitionDuration = `${timer / 1000}s`;
+          ele.style.transitionDuration = `${transitionTime / 1000}s`;
         });
 
         let hide = slider.querySelectorAll("img.hide");
         hide.forEach((ele) => {
-          ele.style.transitionDuration = `${timer / 1000}s`;
+          ele.style.transitionDuration = `${transitionTime / 1000}s`;
         });
       }, 10);
 
@@ -212,16 +204,18 @@ const FancySlider = (props) => {
 
         let show = slider.querySelectorAll("img.show");
         show.forEach((ele) => {
-          ele.style.transitionDuration = `${timer / 1000}s`;
+          ele.style.transitionDuration = `${transitionTime / 1000}s`;
         });
 
         let hide = slider.querySelectorAll("img.hide");
         hide.forEach((ele) => {
-          ele.style.transitionDuration = `${timer / 1000}s`;
+          ele.style.transitionDuration = `${transitionTime / 1000}s`;
         });
-      }, timer * 1.2);
+      }, transitionTime*1.4);
       return c;
     });
+
+    console.log(counter)
   };
 
   ////////////////////////////////////////////////
@@ -234,28 +228,37 @@ const FancySlider = (props) => {
 
     setTimeout(() => {
       setStop(false);
-    }, timer * 1);
+    }, transitionTime);
   };
 
-  
-  const controlNavWrapper = (
-    <div id="controlWrapper">
+  const controllerClicked = (e) => {
 
+    const parentNode = e.target.parentNode.parentNode
+    const index = [].indexOf.call(parentNode.children, e.target.parentNode)
+    
+    e.target.classList.add('active')
+
+    console.log(index)
+    
+    setCounter(index)
+
+    const rightArrow = document.querySelector('.click_me.right')
+    rightArrow.click()
+
+  }
+  
+  const controlNavWrapper =  (
+    <div className="controlWrapper">
+      <ul>
+        {images.map((item, index)=> <li key={index}><button onClick={(e)=>controllerClicked(e)}></button></li>)}
+      </ul>
     </div>
   )
 
   return (
     <div id="fancySlider" className="pb200 desk plr100" ref={sliderRef}>
-      <div className="wrapper" ref={wrapper}>
-        <img src={imgO} alt="" />
-        <img src={imgT} alt="" />
-        <img src={imgTh} alt="" />
-        <img src={imgF} alt="" />
-        <img src={imgFi} alt="" />
-        <img src={imgS} alt="" />
-      </div>
+   
 
-      {controlNav && controlNavWrapper}
 
       <button
         className={directionNav==false? "click_me left hide" : "click_me left"}
@@ -265,6 +268,11 @@ const FancySlider = (props) => {
         className={directionNav==false? "click_me right hide" : "click_me right"}
         onClick={(e) => onBtnClick(e)}
       ></button>
+
+     
+     {controlNav && controlNavWrapper}
+
+
     </div>
   );
 };
