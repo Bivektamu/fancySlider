@@ -19,12 +19,12 @@ const FancySlider = (props) => {
       setSlider(sliderRef.current);
     } else {
       if (images && !leftSide) {
-        declareSlider();
+        initializeSlider();
       } else {
         if (auto) {
           let nextSlide = slider.querySelector(".click_me.right");
           const sliderInterval = setInterval(() => {
-            startSlider(nextSlide);
+            sliderLogic(nextSlide);
           }, timer);
 
           if (stop) {
@@ -37,7 +37,7 @@ const FancySlider = (props) => {
     }
   }, [slider, stop, timer, leftSide, counter]);
 
-  function declareSlider() {
+  function initializeSlider() {
     let lS = document.createElement("div"),
       rightSide = document.createElement("div"),
       center = document.createElement("div"),
@@ -50,7 +50,8 @@ const FancySlider = (props) => {
 
       console.log(timer)
 
-    const newImgs = [l2, l1, ...images, f1, f2];
+    // const newImgs = [l2, l1, ...images, f1, f2];
+    const newImgs = images
 
     wrapper.setAttribute('id', 'wrapper')
     lS.setAttribute("id", "left");
@@ -94,7 +95,8 @@ const FancySlider = (props) => {
     });
   }
 
-  const startSlider = (e) => {
+
+  const sliderLogic = (c) => {
     const halfLoad = slider.querySelector(".next.show");
 
     if (halfLoad) {
@@ -102,28 +104,39 @@ const FancySlider = (props) => {
     }
 
 
-    setCounter((prevState) => {
-      let c = prevState;
-      const a = e.classList;
+      let aa, b
 
-      a.forEach((element) => {
-        if (element === "right") {
-          slider.classList.remove("reverse");
-          if (c >= images.length - 3) {
-            c = 2;
-          } else {
-            c = c + 1;
-          }
-        } else if (element === "left") {
-          slider.classList.add("reverse");
+      aa = c+1
+      b=aa+1
 
-          if (c < 2) {
-            c = images.length - 3;
-          }
-          c = c - 1;
-        }
-      });
+      if(c===images.length - 2) {
+        b=0
+      }
+      else if(c === images.length - 1 ) {
+        aa = 0
+        b = 1
+      }
+      else if(c > images.length - 1 ) {
+        c = 0;
+        setCounter(c)
 
+        aa = c+1
+        b=aa+1
+      }
+      else if(c < 0 ) {
+        c = images.length - 1;
+        setCounter(c)
+
+        aa = 0
+        b=aa+1
+      }
+
+
+      console.log(c, aa, b)
+
+
+
+      
       let leftSide = document.getElementById("left"),
         rightSide = document.getElementById("right"),
         center = document.getElementById("center"),
@@ -142,7 +155,7 @@ const FancySlider = (props) => {
         }
       });
 
-      nextSlide.setAttribute("src", images[c + 1]);
+      nextSlide.setAttribute("src", images[aa]);
 
       rightSide.childNodes.forEach((element) => {
         if (element.className === "next") {
@@ -150,7 +163,7 @@ const FancySlider = (props) => {
         }
       });
 
-      nextSlide.setAttribute("src", images[c + 2]);
+      nextSlide.setAttribute("src", images[b]);
 
       let next = slider.querySelectorAll(".next"),
         current = slider.querySelectorAll(".current");
@@ -212,19 +225,34 @@ const FancySlider = (props) => {
           ele.style.transitionDuration = `${transitionTime / 1000}s`;
         });
       }, transitionTime*1.4);
-      return c;
-    });
 
-    console.log(counter)
+
+
   };
 
   ////////////////////////////////////////////////
   const onBtnClick = (e) => {
     setStop(true);
+    let c = counter
 
-    let nextSlide = e.target;
 
-    startSlider(nextSlide);
+    const classes = e.target.classList;
+
+    classes.forEach((element) => {
+      if (element === "right") {
+        slider.classList.remove("reverse");
+        c= c+1
+
+      } else if (element === "left") {
+        slider.classList.add("reverse");
+        c = c - 1;
+      }
+    });
+
+
+    setCounter(c)
+
+    sliderLogic(c);
 
     setTimeout(() => {
       setStop(false);
