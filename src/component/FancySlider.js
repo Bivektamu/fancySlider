@@ -12,6 +12,7 @@ const FancySlider = (props) => {
   const auto = props?.auto;
   const directionNav = props?.directionNav
   const controlNav = props?.controlNav
+  const [controller, setController] = useState(null)
   const transitionTime = props.transitionTime? props.transitionTime : 500
 
   useEffect(() => {
@@ -22,9 +23,11 @@ const FancySlider = (props) => {
         initializeSlider();
       } else {
         if (auto) {
-          let nextSlide = slider.querySelector(".click_me.right");
+          let c = counter
+          c=c+1
+
           const sliderInterval = setInterval(() => {
-            sliderLogic(nextSlide);
+            sliderLogic(c);
           }, timer);
 
           if (stop) {
@@ -43,12 +46,6 @@ const FancySlider = (props) => {
       center = document.createElement("div"),
       wrapper = document.createElement('div');
 
-    let f1 = images[0],
-      f2 = images[1],
-      l1 = images[images.length - 1],
-      l2 = images[images.length - 2];
-
-      console.log(timer)
 
     // const newImgs = [l2, l1, ...images, f1, f2];
     const newImgs = images
@@ -93,6 +90,12 @@ const FancySlider = (props) => {
     currSlide.forEach((ele) => {
       ele.style.transitionDuration = `${timer}s`;
     });
+
+    if(controlNav) {
+      const controlWrapper = document.querySelector('.controlWrapper>ul')
+      setController(controlWrapper)
+    }
+
   }
 
 
@@ -118,25 +121,20 @@ const FancySlider = (props) => {
       }
       else if(c > images.length - 1 ) {
         c = 0;
-        setCounter(c)
 
         aa = c+1
         b=aa+1
       }
       else if(c < 0 ) {
         c = images.length - 1;
-        setCounter(c)
-
         aa = 0
         b=aa+1
       }
 
 
-      console.log(c, aa, b)
+      setCounter(c)
 
 
-
-      
       let leftSide = document.getElementById("left"),
         rightSide = document.getElementById("right"),
         center = document.getElementById("center"),
@@ -165,10 +163,13 @@ const FancySlider = (props) => {
 
       nextSlide.setAttribute("src", images[b]);
 
+
       let next = slider.querySelectorAll(".next"),
         current = slider.querySelectorAll(".current");
 
-      setTimeout(() => {
+
+
+      // setTimeout(() => {
         next.forEach((item) => {
           item.classList.add("show");
         });
@@ -190,9 +191,14 @@ const FancySlider = (props) => {
         hide.forEach((ele) => {
           ele.style.transitionDuration = `${transitionTime / 1000}s`;
         });
-      }, 10);
+      // }, 10);
+
+      if(controller) {
+        console.log(controller)
+      }
 
       setTimeout(() => {
+      
         current.forEach((item) => {
           item.classList.add("next");
         });
@@ -224,7 +230,10 @@ const FancySlider = (props) => {
         hide.forEach((ele) => {
           ele.style.transitionDuration = `${transitionTime / 1000}s`;
         });
-      }, transitionTime*1.4);
+
+
+
+      }, transitionTime*1.2);
 
 
 
@@ -234,7 +243,6 @@ const FancySlider = (props) => {
   const onBtnClick = (e) => {
     setStop(true);
     let c = counter
-
 
     const classes = e.target.classList;
 
@@ -248,9 +256,6 @@ const FancySlider = (props) => {
         c = c - 1;
       }
     });
-
-
-    setCounter(c)
 
     sliderLogic(c);
 
