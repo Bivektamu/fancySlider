@@ -81,7 +81,7 @@ const FancySlider = (props) => {
     switch (slideToShow) {
       case 1:
         slider.classList.add('show_only_1')
-        center.style.width = '100px'
+        lS.style.width = '100%'
         break;
 
       case 2:
@@ -99,6 +99,11 @@ const FancySlider = (props) => {
         lS.style.width = `calc(33.333% - ${gap}px)`
         center.style.width = `calc(33.333%)`
         break;
+    }
+
+    if(window.innerWidth < 761) {
+      slider.classList.add('show_only_1')
+      lS.style.width = '100%'
     }
 
 

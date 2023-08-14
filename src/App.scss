@@ -10,6 +10,7 @@
   margin: 0 auto;
   #wrapper {
     @include flex(center, space-between);
+    width: 100%;
 
     & > div {
       position: relative;
