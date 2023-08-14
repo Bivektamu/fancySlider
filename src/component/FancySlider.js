@@ -76,32 +76,40 @@ const FancySlider = (props) => {
       newImgs[c + 3]
     }" class="next" />`;
     rightSide.innerHTML = html;
-
-    setImages(newImgs);
-    wrapper.appendChild(lS);
-    wrapper.appendChild(center);
-    wrapper.appendChild(rightSide);
-
-    slider.prepend(wrapper);
     
-
 
     switch (slideToShow) {
       case 1:
         slider.classList.add('show_only_1')
+        center.style.width = '100px'
         break;
 
       case 2:
         slider.classList.add('show_only_2')
+        center.style.width = `calc(50% - ${gap/2}px)`
+        lS.style.width = `calc(50% - ${gap/2}px)`
+
         if(!directionNav) {
           setAuto(true)
         }
         break;
     
       default:
+        rightSide.style.width = `calc(33.333% - ${gap}px)`
+        lS.style.width = `calc(33.333% - ${gap}px)`
+        center.style.width = `calc(33.333%)`
         break;
     }
 
+
+     setImages(newImgs);
+    wrapper.appendChild(lS);
+    wrapper.appendChild(center);
+    wrapper.appendChild(rightSide);
+
+    slider.prepend(wrapper);
+
+    
     switch (animationEasing) {
       case 'slide':
         slider.classList.add('slide')
@@ -140,12 +148,6 @@ const FancySlider = (props) => {
 
   ////////////////////////////////////////////////
   const sliderLogic = (c) => {
-//     const halfLoad = slider.querySelector(".next.show");
-// 
-//     if (halfLoad) {
-//       return;
-//     }
-    console.log('asdf')
     if(animating) {
       return
     }

@@ -12,7 +12,6 @@
     @include flex(center, space-between);
 
     & > div {
-      width: calc(33.333% - 5px);
       position: relative;
       overflow: hidden;
 
@@ -22,15 +21,11 @@
         top: 0;
         bottom: 0;
         z-index: 2;
-        // width: calc(100% - 100px);
         width: calc(100%);
-
         height: 100%;
         transform: translateX(100%) scaleY(1.2);
-        // opacity: 0;
         transform-origin: right;
         transition-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-        // transition: all 1s cubic-bezier(0.45, 0, 0.55, 1);
         transition-duration: 0s;
         object-fit: cover;
         transition-property: all;
@@ -43,16 +38,12 @@
       }
 
       .current {
-        // position: relative;
-        // z-index: 2;
         transition-property: all;
 
         &.hide {
           transform: translateX(-20%) scaleY(1.1);
           transition-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-          // transition: all 1s cubic-bezier(0.45, 0, 0.55, 1);
           transition-delay: 0.1s;
-          // opacity: 0;
         }
       }
       &#left,
@@ -63,51 +54,14 @@
       }
 
       &#left {
-          filter: blur(2px);
-          // padding-right: 100px;
-        &:after {
-          width: 100px;
-          height: 100%;
-          // content: "";
-          position: absolute;
-          right: 0;
-          background: #fff;
-          z-index: 2;
-          top: 0;
-        }
-        .next {
-          // left: 0;
-        }
-
-        img {
-          // filter: blur(2px);
-        }
+        filter: blur(2px);
       }
       &#right {
-          filter: blur(2px);
-          // padding-left: 100px;
-        img {
-          // filter: blur(2px);
-        }
-        &:after {
-          width: 100px;
-          height: 100%;
-          // content: "";
-          position: absolute;
-          left: 0;
-          background: #fff;
-          z-index: 2;
-          top: 0;
-        }
-
-        .next {
-          // right: 0;
-        }
+        filter: blur(2px);
       }
 
       &#center {
         padding: 0;
-        width: calc(33.333%);
         .next {
           width: 100%;
         }
@@ -117,10 +71,8 @@
         display: block;
         width: 100%;
         object-fit: cover;
-        // height: auto;
       }
     }
-   
   }
 
   &.slide {
@@ -129,25 +81,22 @@
         .next {
           transform: translateX(100%);
           left: 0;
-  
+
           &.show {
             opacity: 1;
             left: 0;
-            transform: translateX(0) ;
+            transform: translateX(0);
           }
         }
-  
+
         .current {
           &.hide {
             transform: translateX(-100%);
             transition-delay: 0s;
           }
         }
-
       }
-     
     }
-  
   }
 
   &.reverse {
@@ -158,6 +107,17 @@
 
       .current.hide {
         transform: translateX(20%) scaleY(1.1);
+      }
+    }
+    &.slide {
+      #wrapper > div {
+        .next {
+          transform: translateX(-100%);
+        }
+
+        .current.hide {
+          transform: translateX(100%);
+        }
       }
     }
   }
@@ -176,7 +136,7 @@
       .current {
         opacity: 1;
         &.hide {
-        transform: none;
+          transform: none;
           opacity: 0;
         }
       }
@@ -185,41 +145,40 @@
 
   &.show_only_1 {
     #wrapper > div {
-      width: 100%;
       .next {
         width: 100%;
       }
       &#left {
-      padding-right: 0;
-      img {
-        filter: blur(0);
+        padding-right: 0;
+        img {
+          filter: blur(0);
+        }
+        &:after {
+          display: none;
+        }
       }
-      &:after {
-        display: none;
-      }
-      }
-      &#center, &#right {
+      &#center,
+      &#right {
         display: none;
         width: 0;
         height: 0;
       }
     }
   }
-  
+
   &.show_only_2 {
     #wrapper > div {
-      width: calc(50% - 50px);
       .next {
         width: 100%;
       }
       &#left {
-      padding-right: 0;
-      img {
-        filter: blur(0);
-      }
-      &:after {
-        display: none;
-      }
+        padding-right: 0;
+        img {
+          filter: blur(0);
+        }
+        &:after {
+          display: none;
+        }
       }
       &#right {
         display: none;
@@ -305,7 +264,8 @@
           padding: 0;
           cursor: pointer;
           border: 1px solid black;
-          &:hover, &.active {
+          &:hover,
+          &.active {
             background: black;
           }
           &.active {
@@ -317,5 +277,3 @@
   }
   //
 }
-
-
