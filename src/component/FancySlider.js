@@ -4,16 +4,18 @@ const FancySlider = (props) => {
   const sliderRef = useRef(null);
 
   const [slider, setSlider] = useState(null);
-  const [timer, setTimer] = useState(props.timer ? props.timer : 4000);
   const [stop, setStop] = useState(false);
   const [images, setImages] = useState(props.images ? props.images : []);
   const [leftSide, setLeftSide] = useState(null);
   const [counter, setCounter] = useState(0);
-  const auto = props?.auto;
+  const [auto, setAuto] = useState(props?.auto)
+
+
+  const timer = props.timer ? props.timer : 4000
   const directionNav = props?.directionNav;
-  const controlNav = props?.controlNav;
   const slideToShow = props?.slideToShow;
   const transitionTime = props.transitionTime ? props.transitionTime : 500;
+  const controlNav = slideToShow===2?false:props?.controlNav;
 
   useEffect(() => {
     if (!slider) {
@@ -46,6 +48,7 @@ const FancySlider = (props) => {
     let lS = document.createElement("div"),
       rightSide = document.createElement("div"),
       center = document.createElement("div"),
+      c = counter,
       wrapper = document.createElement("div");
 
     // const newImgs = [l2, l1, ...images, f1, f2];
@@ -56,18 +59,18 @@ const FancySlider = (props) => {
     center.setAttribute("id", "center");
     rightSide.setAttribute("id", "right");
 
-    let html = `<img src="${newImgs[counter]}" class="current" /><img src="${
-      newImgs[counter + 1]
+    let html = `<img src="${newImgs[c]}" class="current" /><img src="${
+      newImgs[c + 1]
     }" class="next" />`;
     lS.innerHTML = html;
 
-    html = `<img src="${newImgs[counter + 1]}" class="current" /><img src="${
-      newImgs[counter + 2]
+    html = `<img src="${newImgs[c + 1]}" class="current" /><img src="${
+      newImgs[c + 2]
     }" class="next" />`;
     center.innerHTML = html;
 
-    html = `<img src="${newImgs[counter + 2]}" class="current" /><img src="${
-      newImgs[counter + 3]
+    html = `<img src="${newImgs[c + 2]}" class="current" /><img src="${
+      newImgs[c + 3]
     }" class="next" />`;
     rightSide.innerHTML = html;
 
@@ -85,6 +88,9 @@ const FancySlider = (props) => {
 
       case 2:
         slider.classList.add('show_only_2')
+        if(!directionNav) {
+          setAuto(true)
+        }
         break;
     
       default:
@@ -323,7 +329,7 @@ const FancySlider = (props) => {
         onClick={(e) => onBtnClick(e)}
       ></button>
 
-      {controlNav && controlNavWrapper}
+      {(controlNav && slideToShow !== 2) && controlNavWrapper}
     </div>
   );
 };

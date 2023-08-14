@@ -135,13 +135,42 @@
   &.show_only_1 {
     #wrapper > div {
       width: 100%;
-      &#center {
+      .next {
+        width: 100%;
+      }
+      &#left {
       padding-right: 0;
+      img {
+        filter: blur(0);
+      }
       &:after {
         display: none;
       }
       }
-      &#left, &#right {
+      &#center, &#right {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+    }
+  }
+  
+  &.show_only_2 {
+    #wrapper > div {
+      width: calc(50% - 50px);
+      .next {
+        width: 100%;
+      }
+      &#left {
+      padding-right: 0;
+      img {
+        filter: blur(0);
+      }
+      &:after {
+        display: none;
+      }
+      }
+      &#right {
         display: none;
         width: 0;
         height: 0;
