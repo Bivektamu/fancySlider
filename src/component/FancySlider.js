@@ -9,13 +9,15 @@ const FancySlider = (props) => {
   const [leftSide, setLeftSide] = useState(null);
   const [counter, setCounter] = useState(0);
   const [auto, setAuto] = useState(props?.auto)
-
+  const [animating,setAnimating] = useState(false)
 
   const timer = props.timer ? props.timer : 4000
+  const gap = props.gap ? props.gap : 50
   const directionNav = props?.directionNav;
   const slideToShow = props?.slideToShow;
   const transitionTime = props.transitionTime ? props.transitionTime : 500;
   const controlNav = slideToShow===2?false:props?.controlNav;
+  const animationEasing = props?.animationEasing;
 
   useEffect(() => {
     if (!slider) {
@@ -29,6 +31,7 @@ const FancySlider = (props) => {
           c = c + 1;
 
           const sliderInterval = setInterval(() => {
+            console.log('qweqwe')
             sliderLogic(c);
           }, timer);
 
@@ -40,7 +43,7 @@ const FancySlider = (props) => {
         }
       }
     }
-  }, [slider, stop, timer, leftSide, counter]);
+  }, [slider, stop, timer, leftSide, counter, animating]);
 
 
   ////////////////////////////////////////////////
@@ -80,6 +83,8 @@ const FancySlider = (props) => {
     wrapper.appendChild(rightSide);
 
     slider.prepend(wrapper);
+    
+
 
     switch (slideToShow) {
       case 1:
@@ -91,6 +96,19 @@ const FancySlider = (props) => {
         if(!directionNav) {
           setAuto(true)
         }
+        break;
+    
+      default:
+        break;
+    }
+
+    switch (animationEasing) {
+      case 'slide':
+        slider.classList.add('slide')
+        break;
+
+      case 'fade':
+        slider.classList.add('fade')
         break;
     
       default:
@@ -122,11 +140,17 @@ const FancySlider = (props) => {
 
   ////////////////////////////////////////////////
   const sliderLogic = (c) => {
-    const halfLoad = slider.querySelector(".next.show");
-
-    if (halfLoad) {
-      return;
+//     const halfLoad = slider.querySelector(".next.show");
+// 
+//     if (halfLoad) {
+//       return;
+//     }
+    console.log('asdf')
+    if(animating) {
+      return
     }
+
+    setAnimating(true)
 
     let aa, b;
 
@@ -253,11 +277,17 @@ const FancySlider = (props) => {
       hide.forEach((ele) => {
         ele.style.transitionDuration = `${transitionTime / 1000}s`;
       });
-    }, transitionTime * 1.2);
+      setAnimating(false)
+
+    }, transitionTime * 2);
   };
 
   ////////////////////////////////////////////////
   const onBtnClick = (e) => {
+
+    if(animating) {
+      return
+    }
     setStop(true);
     let c = counter;
 
@@ -282,6 +312,11 @@ const FancySlider = (props) => {
   };
 
   const controllerClicked = (e) => {
+
+    if(animating) {
+      return
+    }
+
     setStop(true);
 
     const parentNode = e.target.parentNode.parentNode;
