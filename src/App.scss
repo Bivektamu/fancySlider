@@ -5,10 +5,11 @@
 }
 
 #fancySlider {
-  padding-left: 12%;
-  padding-right: 12%;
+  padding-left: 110px;
+  padding-right: 110px;
   position: relative;
-
+  width: 800px;
+  margin: 0 auto;
   #wrapper {
     @include flex(center, space-between);
 
@@ -131,6 +132,23 @@
     }
   }
 
+  &.show_only_1 {
+    #wrapper > div {
+      width: 100%;
+      &#center {
+      padding-right: 0;
+      &:after {
+        display: none;
+      }
+      }
+      &#left, &#right {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+    }
+  }
+
   .click_me {
     width: 66px;
     height: 14px;
@@ -210,9 +228,14 @@
           &:hover, &.active {
             background: black;
           }
+          &.active {
+            pointer-events: none;
+          }
         }
       }
     }
   }
   //
 }
+
+

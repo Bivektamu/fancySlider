@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import "./App.scss";
 
 
@@ -13,7 +12,7 @@ import FancySlider from "./component/FancySlider";
 
 function App() {
 
-  const [images, setImages] = useState([imgO, imgT, imgTh, imgF, imgFi, imgS])
+  const images = [imgO, imgT, imgTh, imgF, imgFi, imgS]
   
   return (
     <div className="App">
@@ -22,7 +21,7 @@ function App() {
       </header>
 
       <main>
-        <FancySlider images = {images} auto={true} timer={2000} transitionTime = {500} directionNav = {true} controlNav={true}  />
+        <FancySlider slideToShow={1} images = {images} auto={false} timer={2000} transitionTime = {500} directionNav = {true} controlNav={true}  />
       </main>
     </div>
   );
