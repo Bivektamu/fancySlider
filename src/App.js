@@ -21,7 +21,7 @@ function App() {
       </header>
 
       <main>
-        <FancySlider slideToShow={3} images = {images} auto={false} timer={2000} transitionTime = {500} directionNav = {true} controlNav={true} animationEasing = {'slide'} gap={50} />
+        <FancySlider slideToShow={2} images = {images} auto={false} timer={2000} transitionTime = {500} directionNav = {true} controlNav={true} gap={50} />
       </main>
     </div>
   );

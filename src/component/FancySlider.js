@@ -8,15 +8,15 @@ const FancySlider = (props) => {
   const [images, setImages] = useState(props.images ? props.images : []);
   const [leftSide, setLeftSide] = useState(null);
   const [counter, setCounter] = useState(0);
-  const [auto, setAuto] = useState(props?.auto)
-  const [animating,setAnimating] = useState(false)
-
-  const timer = props.timer ? props.timer : 4000
-  const gap = props.gap ? props.gap : 50
+  const [auto, setAuto] = useState(props?.auto);
+  const [animating, setAnimating] = useState(false);
+  
+  const timer = props.timer ? props.timer : 4000;
+  const gap = props.gap ? props.gap : 50;
   const directionNav = props?.directionNav;
   const slideToShow = props?.slideToShow;
   const transitionTime = props.transitionTime ? props.transitionTime : 500;
-  const controlNav = slideToShow===2?false:props?.controlNav;
+  const controlNav = slideToShow === 2 ? false : props?.controlNav;
   const animationEasing = props?.animationEasing;
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const FancySlider = (props) => {
           c = c + 1;
 
           const sliderInterval = setInterval(() => {
-            console.log('qweqwe')
+            console.log("qweqwe");
             sliderLogic(c);
           }, timer);
 
@@ -45,7 +45,6 @@ const FancySlider = (props) => {
     }
   }, [slider, stop, timer, leftSide, counter, animating]);
 
-
   ////////////////////////////////////////////////
   function initializeSlider() {
     let lS = document.createElement("div"),
@@ -54,7 +53,6 @@ const FancySlider = (props) => {
       c = counter,
       wrapper = document.createElement("div");
 
-    // const newImgs = [l2, l1, ...images, f1, f2];
     const newImgs = images;
 
     wrapper.setAttribute("id", "wrapper");
@@ -76,54 +74,55 @@ const FancySlider = (props) => {
       newImgs[c + 3]
     }" class="next" />`;
     rightSide.innerHTML = html;
-    
 
     switch (slideToShow) {
       case 1:
-        slider.classList.add('show_only_1')
-        lS.style.width = '100%'
+        slider.classList.add("show_only_1");
+        lS.style.width = "100%";
+        center.style.display = "none";
+        rightSide.style.display = "none";
+        lS.style.filter = "blur(0)";
         break;
 
       case 2:
-        slider.classList.add('show_only_2')
-        center.style.width = `calc(50% - ${gap/2}px)`
-        lS.style.width = `calc(50% - ${gap/2}px)`
+        center.style.width = `calc(50% - ${gap / 2}px)`;
+        lS.style.width = `calc(50% - ${gap / 2}px)`;
+        lS.style.filter = "blur(0)";
+        rightSide.style.display = "none";
 
-        if(!directionNav) {
-          setAuto(true)
+        if (!directionNav) {
+          setAuto(true);
         }
         break;
-    
+
       default:
-        rightSide.style.width = `calc(33.333% - ${gap}px)`
-        lS.style.width = `calc(33.333% - ${gap}px)`
-        center.style.width = `calc(33.333%)`
+        rightSide.style.width = `calc(33.333% - ${gap}px)`;
+        lS.style.width = `calc(33.333% - ${gap}px)`;
+        center.style.width = `calc(33.333%)`;
         break;
     }
 
-    if(window.innerWidth < 761) {
-      slider.classList.add('show_only_1')
-      lS.style.width = '100%'
+    if (window.innerWidth < 761) {
+      slider.classList.add("show_only_1");
+      lS.style.width = "100%";
     }
 
-
-     setImages(newImgs);
+    setImages(newImgs);
     wrapper.appendChild(lS);
     wrapper.appendChild(center);
     wrapper.appendChild(rightSide);
 
     slider.prepend(wrapper);
 
-    
     switch (animationEasing) {
-      case 'slide':
-        slider.classList.add('slide')
+      case "slide":
+        slider.classList.add("slide");
         break;
 
-      case 'fade':
-        slider.classList.add('fade')
+      case "fade":
+        slider.classList.add("fade");
         break;
-    
+
       default:
         break;
     }
@@ -153,11 +152,11 @@ const FancySlider = (props) => {
 
   ////////////////////////////////////////////////
   const sliderLogic = (c) => {
-    if(animating) {
-      return
+    if (animating) {
+      return;
     }
 
-    setAnimating(true)
+    setAnimating(true);
 
     let aa, b;
 
@@ -284,16 +283,14 @@ const FancySlider = (props) => {
       hide.forEach((ele) => {
         ele.style.transitionDuration = `${transitionTime / 1000}s`;
       });
-      setAnimating(false)
-
+      setAnimating(false);
     }, transitionTime * 2);
   };
 
   ////////////////////////////////////////////////
   const onBtnClick = (e) => {
-
-    if(animating) {
-      return
+    if (animating) {
+      return;
     }
     setStop(true);
     let c = counter;
@@ -313,15 +310,14 @@ const FancySlider = (props) => {
     sliderLogic(c);
 
     setTimeout(() => {
-        slider.classList.remove("reverse");
-        setStop(false);
+      slider.classList.remove("reverse");
+      setStop(false);
     }, transitionTime);
   };
 
   const controllerClicked = (e) => {
-
-    if(animating) {
-      return
+    if (animating) {
+      return;
     }
 
     setStop(true);
@@ -329,18 +325,17 @@ const FancySlider = (props) => {
     const parentNode = e.target.parentNode.parentNode;
     const index = [].indexOf.call(parentNode.children, e.target.parentNode);
 
-    const c = counter
+    const c = counter;
 
-    if(index < c) {
+    if (index < c) {
       slider.classList.add("reverse");
     }
- 
+
     sliderLogic(index);
 
     setTimeout(() => {
       setStop(false);
       slider.classList.remove("reverse");
-
     }, transitionTime);
   };
 
@@ -371,7 +366,7 @@ const FancySlider = (props) => {
         onClick={(e) => onBtnClick(e)}
       ></button>
 
-      {(controlNav && slideToShow !== 2) && controlNavWrapper}
+      {controlNav && slideToShow !== 2 && controlNavWrapper}
     </div>
   );
 };
