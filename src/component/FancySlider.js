@@ -10,7 +10,7 @@ const FancySlider = (props) => {
   const [counter, setCounter] = useState(0);
   const [auto, setAuto] = useState(props?.auto);
   const [animating, setAnimating] = useState(false);
-  
+
   const timer = props.timer ? props.timer : 4000;
   const gap = props.gap ? props.gap : 50;
   const directionNav = props?.directionNav;
@@ -26,7 +26,7 @@ const FancySlider = (props) => {
       if (images && !leftSide) {
         initializeSlider();
       } else {
-        if (auto) {
+        if (auto || (!directionNav && !controlNav)) {
           let c = counter;
           c = c + 1;
 
@@ -43,6 +43,9 @@ const FancySlider = (props) => {
         }
       }
     }
+
+    console.log(directionNav)
+
   }, [slider, stop, timer, leftSide, counter, animating]);
 
   ////////////////////////////////////////////////
@@ -145,7 +148,6 @@ const FancySlider = (props) => {
       let grabController = document.querySelector(
         ".controlWrapper > ul > li:first-child > button"
       );
-
       grabController.classList.add("active");
     }
   }
@@ -339,6 +341,16 @@ const FancySlider = (props) => {
     }, transitionTime);
   };
 
+  const directionNavWrapper = (
+    <>
+      <button className="click_me left" onClick={(e) => onBtnClick(e)}></button>
+      <button
+        className="click_me right"
+        onClick={(e) => onBtnClick(e)}
+      ></button>
+    </>
+  );
+
   const controlNavWrapper = (
     <div className="controlWrapper">
       <ul>
@@ -353,19 +365,7 @@ const FancySlider = (props) => {
 
   return (
     <div id="fancySlider" className="pb200 desk plr100" ref={sliderRef}>
-      <button
-        className={
-          directionNav === false ? "click_me left hide" : "click_me left"
-        }
-        onClick={(e) => onBtnClick(e)}
-      ></button>
-      <button
-        className={
-          directionNav === false ? "click_me right hide" : "click_me right"
-        }
-        onClick={(e) => onBtnClick(e)}
-      ></button>
-
+      {directionNav && directionNavWrapper}
       {controlNav && slideToShow !== 2 && controlNavWrapper}
     </div>
   );

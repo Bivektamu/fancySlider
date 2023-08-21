@@ -15,15 +15,7 @@ function App() {
   const images = [imgO, imgT, imgTh, imgF, imgFi, imgS]
   
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Slider</h1>
-      </header>
-
-      <main>
-        <FancySlider slideToShow={2} images = {images} auto={false} timer={2000} transitionTime = {500} directionNav = {true} controlNav={true} gap={50} />
-      </main>
-    </div>
+        <FancySlider slideToShow={3} images = {images} auto={false} timer={1000} transitionTime = {500} directionNav = {false} controlNav={true} gap={100} />
   );
 }
 
