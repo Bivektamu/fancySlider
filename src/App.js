@@ -8,7 +8,11 @@ import imgF from "./images/2d.jpg";
 import imgFi from "./images/2e.jpg";
 import imgS from "./images/2f.jpg";
 
-import FancySlider from "./fancy-slider/FancySlider";
+// import FancySlider from "./fancy-slider/component/FancySlider";
+
+// import FancySlider from './fancy-slider/dist/my-react-library'
+import {FancySlider} from 'react-fancyslider'
+
 
 function App() {
 

@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
 import "./FancySlider.scss"
+
+import React, { useEffect, useRef, useState } from "react";
 
 const FancySlider = (props) => {
   const sliderRef = useRef(null);

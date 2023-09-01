@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './FancySlider.js',
+  entry: './component/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'my-react-library.js',

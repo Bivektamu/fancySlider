@@ -1,6 +1,6 @@
 {
-  "name": "react-fancySlider",
-  "version": "1.0.0",
+  "name": "react-fancyslider",
+  "version": "1.0.1",
   "description": "Slider for react with three slides",
   "main": "dist/my-react-library.js",
   "scripts": {
