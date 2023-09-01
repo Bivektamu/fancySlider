@@ -8,7 +8,7 @@ import imgF from "./images/2d.jpg";
 import imgFi from "./images/2e.jpg";
 import imgS from "./images/2f.jpg";
 
-import FancySlider from "./component/FancySlider";
+import FancySlider from "./fancy-slider/FancySlider";
 
 function App() {
 
